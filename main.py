@@ -84,10 +84,13 @@ def new_questions():
         amount = int(amount)
     except:
         print('Pls specify an integer for ammount')
-    if amount < 1 or amount > 50: 
-        print('Pls specify amount between 1 to 50')
-        run = False
+    try: 
+        if amount < 1 or amount > 50: 
+             print('Pls specify amount between 1 to 50')
+             run = False
 
+    except:
+        run = False
 
     # Which category
     if run:
@@ -120,6 +123,7 @@ def new_questions():
             difficulty = difficulty.lower()
             if difficulty not in ['easy', 'medium', 'hard']:
                 print('Please choice a "easy", "medium" or "hard"')
+                run = False
     
 
 
