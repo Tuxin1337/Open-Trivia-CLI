@@ -6,9 +6,11 @@ import json
 get_token_url = 'https://opentdb.com/api_token.php?command=request'
 base_url = 'https://opentdb.com/api.php?'
 lookup_categorys_url = 'https://opentdb.com/api_category.php'
+lookup_category_url = 'https://opentdb.com/api_count.php?category='
 #### VARS ####
 token = ""
 amount = 10
+global run
 run = True
 logo = '''
    ____                     _______   _       _          _____ _      _____ 
@@ -39,57 +41,97 @@ def get_token(url):
     return r.json()['token']
 
 def get_questions(**kwargs):
+    run = True
     global token
-    if token == "": #check if token exits
-        token = get_token(get_token_url)
+    if token == "": # Check if token exits
+        token = get_token(get_token_url) # Get new token
 
-    url = base_url + f"amount={amount}&token={token}" # Create URL with amount and token
-    for key, value in kwargs.items(): # Add custom properties
-        url = url + f"&{key}={value}"
-    r = make_request(url) #Make request
-    print(r.json())
-    return r.json()
+    # check if category is available
+    categorys_url = f"{lookup_category_url}{kwargs['category']}"
+    categorys = make_request(categorys_url)
+    try:
+        categorys.json()
+    except:
+        if kwargs['category'] != "":
+            run = False
+    if run:
+        url = base_url + f"amount={amount}&token={token}" # Create URL with amount and token
+        for key, value in kwargs.items(): # Add custom properties
+            url = url + f"&{key}={value}"
+        r = make_request(url) #Make request
+        return r.json()
+    else:
+        print('Category ID is not available, please check "?" for IDs')
+
+def ask_questions(questions):
+    for question in questions['results']:
+       print(question) 
+
 
 def print_categorys(): # Print all available categorys
     categorys = make_request(lookup_categorys_url)
     for category in categorys.json()['trivia_categories']:
         print(f"{category['name']} | {category['id']}, ")
 
-def ask_questions():
+def new_questions():
+    run = True
+    # How many questions
     print("How many questions do you want to get asked? (Default: 10)")
     amount = input(">> ")
-    print("In which category do you want to get asked? (Default: all)")
-    category = input(">> ")
-    print("Which type of questions do you want to get asked? (boolean, multiple, Default: multiple)")
-    question_type = input(">> ")
-
-    run = True
-
     if amount == "":
         amount = 10
     try:
         amount = int(amount)
     except:
         print('Pls specify an integer for ammount')
-    if amount < 0 or amount > 50: 
-        print('Pls specify amount btw. 1 to 50')
-        run = False
-    if category is not "":
-        try:
-            category = int(category)
-        except:
-            print('Pls specify an integer for category (check: "?")')
-            run = False
-    if question_type == "":
-        question_type = 'multiple'
-    else:
-        question_type = question_type.lower()
-    if question_type not in ['boolean', 'multiple']:
-        print('Use "boolean" or "multiple" for question type')
+    if amount < 1 or amount > 50: 
+        print('Pls specify amount between 1 to 50')
         run = False
 
+
+    # Which category
     if run:
-        get_questions(amount=amount, type=question_type, category=category)
+        print("In which category do you want to get asked? (Default: all)")
+        category = input(">> ")
+        if category != "":
+            try:
+                category = int(category)
+            except:
+                print('Pls specify an integer for category (check: "?")')
+                run = False
+    
+    
+    # Which type
+    if run:
+        print("Which type of questions do you want to get asked? (boolean, multiple, Default: multiple)")
+        question_type = input(">> ")
+        if question_type != "":
+            question_type = question_type.lower()
+            if question_type not in ['boolean', 'multiple']:
+                print('Use "boolean" or "multiple" for question type')
+                run = False
+    
+    
+    # Which difficulty 
+    if run:
+        print("Which difficulty should the questions are? (easy, medium, hard, Default: Random)")
+        difficulty = input(">> ")
+        if difficulty != "":
+            difficulty = difficulty.lower()
+            if difficulty not in ['easy', 'medium', 'hard']:
+                print('Please choice a "easy", "medium" or "hard"')
+    
+
+
+
+    if run:
+        questions = get_questions(amount=amount, type=question_type, category=category, difficulty=difficulty)
+        if questions != None:
+            ask_questions(questions)
+        else:
+            print('Send N to retry')
+    else:
+        print('Send N to retry')
 
 def user_input_handler(user_input):
     user_input = user_input.lower()
@@ -100,7 +142,7 @@ def user_input_handler(user_input):
     elif user_input in ['q', 'exit', 'quit']:
         print("Bye!")
     elif user_input in ['new', 'n']:
-        ask_questions()
+        new_questions()
     else:
         print("Help:")
         print('     Write "?" to get a list of categorys')
