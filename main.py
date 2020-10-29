@@ -1,6 +1,8 @@
 import requests
 import json
-
+import html
+import random
+import time
 
 #### URLS ####
 get_token_url = 'https://opentdb.com/api_token.php?command=request'
@@ -24,10 +26,14 @@ logo = '''
 version = "0.1"
 
 def intro():
-    print(logo)
-    print()
+    print_logo()
     print('Hello and welcome to Open Trivia CLI')
     print('Write "help" to get a quick help')
+
+def print_logo(): # Print Ascii Logo
+    print("\033c", end="") # Clear the Terminal
+    print(logo)
+    print()
 
 def make_request(url):
     r = requests.get(url) 
@@ -64,9 +70,50 @@ def get_questions(**kwargs):
         print('Category ID is not available, please check "?" for IDs')
 
 def ask_questions(questions):
+    question_counter = 0
+    question_amount = len(questions['results'])
+    right_answers = 0
+    wrong_answers = 0
     for question in questions['results']:
-       print(question) 
-
+        print_logo()
+        run = True
+        counter = 1
+        drawn_answers = 0
+        print(f'Question number: {question_counter + 1}/{question_amount}')
+        print(html.unescape(question['question']))
+        answer_counter = len(question['incorrect_answers']) + 1
+        right_answer = random.randint(1, answer_counter)
+        question_counter = question_counter + 1
+        while counter <= answer_counter:
+            if counter == right_answer:
+                answer = question['correct_answer']
+            else:
+                answer = question['incorrect_answers'][drawn_answers]
+                drawn_answers = drawn_answers + 1
+            print(f'{counter}. {html.unescape(answer)}')
+            counter = counter +1
+        while run:
+            user_input_is_int = True
+            user_input = input(">> ")
+            try:
+                user_input = int(user_input)
+            except:
+                user_input_is_int = False
+                print(f'Please specifiy a number between 1 and {answer_counter}')
+            if user_input_is_int:
+                if user_input == right_answer:
+                    print(f'Correct!')
+                    right_answers = right_answers + 1
+                else:
+                    print(f'Wrong, answer {right_answer} was right ({html.unescape(question["correct_answer"])})')
+                    wrong_answers = wrong_answers + 1
+                run = False
+                print(f'You had {right_answers}/{right_answers + wrong_answers} answer(s) right ({round((100 / (right_answers + wrong_answers) * right_answers), 2)})%')
+                time.sleep(2.5)
+    print_logo()
+    print(f'You had {right_answers}/{right_answers + wrong_answers} answer(s) right ({round((100 / (right_answers + wrong_answers) * right_answers), 2)})%')
+    input("Press any key to resume...")
+    intro()
 
 def print_categorys(): # Print all available categorys
     categorys = make_request(lookup_categorys_url)
@@ -152,8 +199,6 @@ def user_input_handler(user_input):
         print('     Write "?" to get a list of categorys')
         print('     Write "q" to exit the programm')
         print('     Write "v" to get the version')
-
-
 
 # Main loop
 intro()
