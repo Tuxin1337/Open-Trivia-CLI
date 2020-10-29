@@ -10,4 +10,4 @@
 # About
 An Open Trivia game written in Python for the commandline.
 
-The game is powered by the [Open Trivia DB](https://opentdb.com/)
+The game is powered by the [Open Trivia DB](https://opentdb.com/).
