@@ -6,4 +6,8 @@
           \____/| .__/ \___|_| |_|    |_|_|  |_| \_/ |_|\__,_|  \_____|______|_____|
                 | |                                                                 
                 |_|
-A Open Trivia game written in Python for the commandline.
+
+# About
+An Open Trivia game written in Python for the commandline.
+
+The game is powered by the [Open Trivia DB](https://opentdb.com/)
