@@ -11,3 +11,7 @@
 An Open Trivia game written in Python for the commandline.
 
 The game is powered by the [Open Trivia DB](https://opentdb.com/).
+
+# Installation
+`pip3 install -r requirements.txt`
+`./open-trivia-cli`
