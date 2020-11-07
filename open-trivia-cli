@@ -29,7 +29,7 @@ version = "0.1"
 def intro():
     print_logo()
     print('Hello and welcome to Open Trivia CLI')
-    print('Write "help" to get a quick help')
+    print('Write "help" to get help')
 
 def print_logo(): # Print Ascii Logo
     print("\033c", end="") # Clear the Terminal
@@ -113,7 +113,7 @@ def ask_questions(questions):
                 time.sleep(2.5)
     print_logo()
     print(f'You had {right_answers}/{right_answers + wrong_answers} answer(s) right ({round((100 / (right_answers + wrong_answers) * right_answers), 2)})%')
-    input("Press any key to resume...")
+    input("Press any key to continue...")
     intro()
 
 def print_categorys(): # Print all available categorys
@@ -154,7 +154,7 @@ def new_questions():
     
     # Which type
     if run:
-        print("Which type of questions do you want to get asked? (boolean, multiple, Default: multiple)")
+        print("Which type of questions do you want to get asked? (boolean, multiple, Default: mixed)")
         question_type = input(">> ")
         if question_type != "":
             question_type = question_type.lower()
@@ -165,7 +165,7 @@ def new_questions():
     
     # Which difficulty 
     if run:
-        print("Which difficulty should the questions are? (easy, medium, hard, Default: Random)")
+        print("Which difficulty should the questions are? (easy, medium, hard, Default: mixed)")
         difficulty = input(">> ")
         if difficulty != "":
             difficulty = difficulty.lower()
@@ -200,6 +200,7 @@ def user_input_handler(user_input):
         print('     Write "?" to get a list of categorys')
         print('     Write "q" to exit the programm')
         print('     Write "v" to get the version')
+        print('     Write "n" to start a new game')
 
 # Main loop
 intro()

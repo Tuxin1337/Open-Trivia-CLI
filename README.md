@@ -12,9 +12,20 @@ An Open Trivia game written in Python for the commandline.
 
 The game is powered by the [Open Trivia DB](https://opentdb.com/).
 
+# Requirements
+- python3
+- python requests [PyPI](https://pypi.org/project/requests/)
+
 # Installation
-`pip3 install -r requirements.txt`
+`"pip3 install -r requirements.txt" or "pip3 install requests"`
 
 `./open-trivia-cli`
 
 
+# Usage
+
+"n" to start a new game
+"h" to get help
+"?" to get a list of categorys
+"v" to get the version
+"q" to exit the programm
