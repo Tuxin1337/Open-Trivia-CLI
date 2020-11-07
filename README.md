@@ -13,8 +13,8 @@ An Open Trivia game written in Python for the commandline.
 The game is powered by the [Open Trivia DB](https://opentdb.com/).
 
 # Requirements
-- python3
-- python [requests](https://pypi.org/project/requests/)
+- Python 3
+- Python [requests](https://pypi.org/project/requests/)
 
 # Installation
 `"pip3 install -r requirements.txt" or "pip3 install requests"`
