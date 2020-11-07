@@ -19,7 +19,10 @@ The game is powered by the [Open Trivia DB](https://opentdb.com/).
 # Installation
 `"pip3 install -r requirements.txt" or "pip3 install requests"`
 
-`./open-trivia-cli`
+# Start
+
+
+`"./open-trivia-cli" or "python3 open-trivia-cli"`
 
 
 # Usage
