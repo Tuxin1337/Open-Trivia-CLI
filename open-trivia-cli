@@ -197,10 +197,10 @@ def user_input_handler(user_input):
         new_questions()
     else:
         print("Help:")
+        print('     Write "n" to start a new game')
         print('     Write "?" to get a list of categorys')
         print('     Write "q" to exit the programm')
         print('     Write "v" to get the version')
-        print('     Write "n" to start a new game')
 
 # Main loop
 intro()
